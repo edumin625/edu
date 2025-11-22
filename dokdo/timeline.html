@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>독도 역사 타임라인</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              // 한국어 우선, 그 다음 Inter, 기본 sans-serif
+              sans: ['"Noto Sans KR"', 'Inter', 'sans-serif'],
+            },
+            colors: {
+                // 커스터마이징 색상: 한국, 중립/국제, 일본 불법 행위
+                'historical-korea': '#1E40AF', // Blue-800
+                'historical-japan': '#EF4444', // Red-600
+                'historical-neutral': '#4B5563', // Gray-600
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        /* Base Container */
+        .timeline-container {
+            position: relative;
+            padding-top: 3rem; /* 타임라인 시작 상단 여백 */
+        }
+
+        /* Timeline Line (Center) */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            width: 6px;
+            background: linear-gradient(to bottom, #9CA3AF, #D1D5DB);
+            transform: translateX(-50%);
+            z-index: 0;
+            border-radius: 9999px;
+            top: 0;
+            bottom: 0;
+        }
+        
+        /* Individual Item (Flex-based for better vertical flow) */
+        .timeline-item {
+            display: flex; /* 내부 요소 정렬에 사용 */
+            position: relative;
+            margin-bottom: 5rem; /* 항목 간 수직 간격 */
+        }
+
+        /* 공통 요소: 중앙선에 위치 */
+        .timeline-date, .timeline-point {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        /* 이벤트 카드 기본 스타일 */
+        .event-card {
+            width: calc(50% - 3rem); /* 화면 절반 - 중앙선과의 간격 */
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease-in-out;
+            z-index: 5;
+            min-height: 120px;
+            
+            /* 연도/점 위치 확보 (카드 내용을 아래로 밀어냄) */
+            padding-top: 4.5rem; 
+        }
+
+        /* 홀수 항목 (왼쪽) 정렬 */
+        .timeline-item:nth-child(odd) {
+            justify-content: flex-start; 
+        }
+        .timeline-item:nth-child(odd) .event-card {
+            margin-right: 3rem; 
+            text-align: right;
+        }
+
+        /* 짝수 항목 (오른쪽) 정렬 */
+        .timeline-item:nth-child(even) {
+            justify-content: flex-end; 
+        }
+        .timeline-item:nth-child(even) .event-card {
+            margin-left: 3rem; 
+            text-align: left;
+        }
+
+        /* ==================================== */
+        /* 모바일 조정 (767px 이하) - 싱글 컬럼 */
+        /* ==================================== */
+        @media (max-width: 767px) {
+            
+            /* 타임라인 선을 왼쪽으로 이동 */
+            .timeline-line {
+                left: 30px; 
+                transform: translateX(0);
+            }
+            
+            /* 모든 항목을 왼쪽 정렬 */
+            .timeline-item {
+                justify-content: flex-start; 
+            }
+
+            /* 연도/점을 새로운 라인에 맞추기 */
+            .timeline-date, .timeline-point {
+                left: 30px; 
+                transform: translateX(-50%);
+            }
+            
+            /* 카드: 폭을 줄이고 연도/점 옆으로 이동 */
+            .event-card {
+                width: calc(100% - 80px); /* 전체 폭 - 왼쪽 여백(80px) */
+                margin-left: 80px !important; 
+                margin-right: 0 !important; 
+                text-align: left !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800 leading-relaxed">
+
+    <!-- 헤더 -->
+    <header class="bg-gradient-to-r from-blue-700 to-blue-500 text-white p-8 md:p-12 text-center shadow-2xl">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-2 tracking-wide">독도 역사 타임라인</h1>
+        <p class="text-lg md:text-xl text-blue-100 font-medium">역사적 사실로 보는 독도의 주요 사건</p>
+    </header>
+
+    <!-- 메인 타임라인 영역 -->
+    <main class="max-w-6xl mx-auto p-6 md:p-10 relative">
+        <div class="timeline-container">
+            <!-- 타임라인 중앙선 -->
+            <div class="timeline-line absolute top-0 bottom-0"></div>
+
+            
+            <!-- 1454년: 세종실록지리지 (한국 역사) -->
+            <div class="timeline-item">
+                <div class="timeline-point w-8 h-8 rounded-full bg-historical-korea border-4 border-white top-0 shadow-lg"></div>
+                
+                <!-- 연도 인터랙션 적용 -->
+                <div class="timeline-date top-0 text-xl font-bold text-white bg-historical-korea px-4 py-1 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl md:min-w-[140px] text-center cursor-default">
+                    1454년
+                </div>
+                
+                <!-- 카드 인터랙션 적용 - mt-16 제거하고 CSS padding-top에 의존 -->
+                <div class="event-card bg-white shadow-xl relative transition-all duration-300 ease-in-out hover:scale-[1.03] hover:shadow-2xl border-b-4 border-historical-korea">
+                    <h3 class="text-2xl font-bold text-historical-korea mb-2">세종실록지리지 기록</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        울릉도(무릉)에서 독도(우산)가 눈으로 보인다는 사실을 기록한 조선의 공식 문서입니다.
+                        이는 우리 조상들이 두 섬을 하나의 생활권으로 인식했음을 보여주는 강력한 증거입니다.
+                    </p>
+                </div>
+            </div>
+
+            
+            <!-- 1667년: 은주시청합기 (중립/일본 기록) -->
+            <div class="timeline-item">
+                <div class="timeline-point w-8 h-8 rounded-full bg-historical-neutral border-4 border-white top-0 shadow-lg"></div>
+                
+                <!-- 연도 인터랙션 적용 -->
+                <div class="timeline-date top-0 text-xl font-bold text-white bg-historical-neutral px-4 py-1 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl md:min-w-[140px] text-center cursor-default">
+                    1667년
+                </div>
+                
+                <!-- 카드 인터랙션 적용 -->
+                <div class="event-card bg-white shadow-xl relative transition-all duration-300 ease-in-out hover:scale-[1.03] hover:shadow-2xl border-b-4 border-historical-neutral">
+                    <h3 class="text-2xl font-bold text-historical-neutral mb-2">일본 '은주시청합기'</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        일본 관리가 작성한 보고서로, 일본 스스로 울릉도와 독도를 조선의 땅으로 인식하고
+                        자국의 서쪽 경계는 오키섬까지라고 명확히 선을 그었음을 기록하고 있습니다.
+                    </p>
+                </div>
+            </div>
+
+            
+            <!-- 1877년: 일본 '태정관 지령' (한국 역사) -->
+            <div class="timeline-item">
+                <div class="timeline-point w-8 h-8 rounded-full bg-historical-korea border-4 border-white top-0 shadow-lg"></div>
+                
+                <!-- 연도 인터랙션 적용 -->
+                <div class="timeline-date top-0 text-xl font-bold text-white bg-historical-korea px-4 py-1 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl md:min-w-[140px] text-center cursor-default">
+                    1877년
+                </div>
+                
+                <!-- 카드 인터랙션 적용 -->
+                <div class="event-card bg-white shadow-xl relative transition-all duration-300 ease-in-out hover:scale-[1.03] hover:shadow-2xl border-b-4 border-historical-korea">
+                    <h3 class="text-2xl font-bold text-historical-korea mb-2">일본 '태정관 지령'</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        일본 최고 국가기관인 태정관이 울릉도와 독도는 일본과 관계가 없다고 공식적으로 결론 내린 문서입니다.
+                        독도가 일본 영토가 아님을 일본 정부 스스로 인정한 결정적인 증거입니다.
+                    </p>
+                </div>
+            </div>
+            
+            
+            <!-- 1900년: 대한제국 칙령 제41호 (한국 역사) -->
+            <div class="timeline-item">
+                <div class="timeline-point w-8 h-8 rounded-full bg-historical-korea border-4 border-white top-0 shadow-lg"></div>
+                
+                <!-- 연도 인터랙션 적용 -->
+                <div class="timeline-date top-0 text-xl font-bold text-white bg-historical-korea px-4 py-1 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl md:min-w-[140px] text-center cursor-default">
+                    1900년
+                </div>
+                
+                <!-- 카드 인터랙션 적용 -->
+                <div class="event-card bg-white shadow-xl relative transition-all duration-300 ease-in-out hover:scale-[1.03] hover:shadow-2xl border-b-4 border-historical-korea">
+                    <h3 class="text-2xl font-bold text-historical-korea mb-2">대한제국 칙령 제41호</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        대한제국이 근대적인 법령을 통해 독도('석도')가 울릉군의 관할 아래 있는
+                        명백한 우리 영토임을 전 세계에 공식적으로 선포했습니다.
+                    </p>
+                </div>
+            </div>
+
+            
+            <!-- 1905년: 일본 '시마네현 고시 제40호' (일본 불법) -->
+            <div class="timeline-item">
+                <div class="timeline-point w-8 h-8 rounded-full bg-historical-japan border-4 border-white top-0 shadow-lg"></div>
+                
+                <!-- 연도 인터랙션 적용 -->
+                <div class="timeline-date top-0 text-xl font-bold text-white bg-historical-japan px-4 py-1 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl md:min-w-[140px] text-center cursor-default">
+                    1905년
+                </div>
+                
+                <!-- 카드 인터랙션 적용 -->
+                <div class="event-card bg-white shadow-xl relative transition-all duration-300 ease-in-out hover:scale-[1.03] hover:shadow-2xl border-b-4 border-historical-japan">
+                    <h3 class="text-2xl font-bold text-historical-japan mb-2">일본 '시마네현 고시 제40호'</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        러일전쟁 중 일본이 '주인 없는 땅'이라는 거짓 명분을 내세워 독도를
+                        '다케시마'라 이름 붙이고 일본 시마네현에 불법적으로 편입시킨 행정 조치입니다.
+                    </p>
+                </div>
+            </div>
+
+            
+            <!-- 1951년: 샌프란시스코 강화조약 (중립/국제) -->
+            <div class="timeline-item">
+                <div class="timeline-point w-8 h-8 rounded-full bg-historical-neutral border-4 border-white top-0 shadow-lg"></div>
+                
+                <!-- 연도 인터랙션 적용 -->
+                <div class="timeline-date top-0 text-xl font-bold text-white bg-historical-neutral px-4 py-1 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl md:min-w-[140px] text-center cursor-default">
+                    1951년
+                </div>
+                
+                <!-- 카드 인터랙션 적용 -->
+                <div class="event-card bg-white shadow-xl relative transition-all duration-300 ease-in-out hover:scale-[1.03] hover:shadow-2xl border-b-4 border-historical-neutral">
+                    <h3 class="text-2xl font-bold text-historical-neutral mb-2">샌프란시스코 강화조약</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        제2차 세계대전 후 일본의 영토를 결정한 조약. 초기 초안에는 독도 반환이 명시되었으나,
+                        일본의 로비로 최종 조약문에서 독도를 의도적으로 제외되어 일본 억지 주장의 빌미가 되었습니다.
+                    </p>
+                </div>
+            </div>
+
+            
+            <!-- 2005년: 일본 '다케시마의 날' 제정 (일본 불법) -->
+            <div class="timeline-item">
+                <div class="timeline-point w-8 h-8 rounded-full bg-historical-japan border-4 border-white top-0 shadow-lg"></div>
+                
+                <!-- 연도 인터랙션 적용 -->
+                <div class="timeline-date top-0 text-xl font-bold text-white bg-historical-japan px-4 py-1 rounded-full shadow-lg transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl md:min-w-[140px] text-center cursor-default">
+                    2005년
+                </div>
+                
+                <!-- 카드 인터랙션 적용 -->
+                <div class="event-card bg-white shadow-xl relative transition-all duration-300 ease-in-out hover:scale-[1.03] hover:shadow-2xl border-b-4 border-historical-japan">
+                    <h3 class="text-2xl font-bold text-historical-japan mb-2">일본 '다케시마의 날' 제정</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        일본 시마네현이 1905년 독도 불법 편입을 기념하며 매년 2월 22일을 '다케시마의 날'로 지정하고
+                        행사를 개최하는 등 역사적 진실을 왜곡하고 있습니다.
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="text-center p-8 mt-12 bg-gray-900 text-gray-400 text-sm shadow-inner">
+        <p>본 페이지는 제공된 문서 및 역사적 사실을 기반으로 작성되었습니다.</p>
+        <p class="mt-1 font-medium">&copy; 2025 독도 역사 타임라인. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

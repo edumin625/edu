@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>독도 종합 보고서: 역사적 가치와 미래</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Noto Sans KR"', 'Inter', 'sans-serif'],
+            },
+            colors: {
+                // 독도 상징색: 바다/주권
+                'dokdo-blue': '#1D4ED8', // Blue-700
+                'dokdo-dark': '#0F172A', // Slate-900
+                'dokdo-light': '#F1F5F9', // Slate-100
+                'dokdo-accent': '#EF4444', // Red-500 for timeline highlight
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        /* 섹션 제목 아래에 독도 형상 아이콘 추가 */
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: #3B82F6; /* Blue-500 */
+            margin: 0.75rem auto 0;
+            border-radius: 9999px;
+        }
+
+        /* 탭 버튼 활성화 스타일 */
+        .tab-button.active {
+            color: white;
+            background-color: #1D4ED8;
+            border-color: #1D4ED8;
+            box-shadow: 0 4px 6px -1px rgba(29, 78, 216, 0.4), 0 2px 4px -2px rgba(29, 78, 216, 0.4);
+        }
+
+        /* 핵심 요약 카드 그리드 (모바일: 1열, 데스크탑: 3열) */
+        @media (min-width: 1024px) {
+            .summary-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        /* 역사 증거 타임라인 카드 스타일 */
+        .proof-card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* 용어사전 버튼 스타일 */
+        .dictionary-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            margin-top: 2rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 9999px;
+            background-color: #3B82F6; /* Blue-500 */
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.5), 0 4px 6px -4px rgba(59, 130, 246, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .dictionary-button:hover {
+            background-color: #2563EB; /* Blue-600 */
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.7), 0 6px 12px -6px rgba(59, 130, 246, 0.7);
+        }
+        
+        /* 타임라인 버튼 스타일 */
+        .timeline-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 9999px;
+            background-color: #EF4444; /* Red-500 */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.4), 0 2px 4px -2px rgba(239, 68, 68, 0.4);
+            transition: all 0.3s ease;
+            margin-left: 1rem; /* 탭 버튼과 간격 */
+        }
+        
+        .timeline-button:hover {
+            background-color: #DC2626; /* Red-600 */
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.6), 0 4px 6px -4px rgba(239, 68, 68, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-dokdo-light font-sans text-dokdo-dark leading-relaxed">
+
+    <!-- 헤더: 타이틀 및 핵심 요약 -->
+    <header class="bg-dokdo-dark text-white p-6 md:p-12 text-center shadow-2xl">
+        <!-- 타이틀 수정 -->
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-2 tracking-wide">
+            대한민국의 독도
+        </h1>
+        <p class="text-xl md:text-2xl text-dokdo-light font-medium mt-4">
+            역사적, 지리적, 경제적 관점에서 본 독도의 가치와 영유권 근거
+        </p>
+    </header>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <main class="max-w-7xl mx-auto p-4 md:p-10">
+
+        <!-- 섹션 1: 핵심 요약 -->
+        <section class="mb-16">
+            <h2 class="section-title text-3xl md:text-4xl font-extrabold text-center mb-10 text-dokdo-dark">
+                핵심 요약
+            </h2>
+
+            <div class="summary-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- 카드 1: 지리적 특성 -->
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 border-t-4 border-dokdo-blue">
+                    <h3 class="text-2xl font-bold mb-3 text-dokdo-blue flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        지리적 인접성
+                    </h3>
+                    <p class="text-gray-700">
+                        독도는 울릉도에서 육안 관측이 가능하여 역사적으로 울릉도 주민의 생활권에 속했습니다. 
+                        지질학적으로도 울릉도(화산섬)와 동일한 기원을 공유하며 연결되어 있습니다.
+                    </p>
+                </div>
+                
+                <!-- 카드 2: 경제적 가치 -->
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 border-t-4 border-dokdo-blue">
+                    <h3 class="text-2xl font-bold mb-3 text-dokdo-blue flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2h-1a2 2 0 00-2 2v1m-4 0h5a2 2 0 002-2v-1a2 2 0 00-2-2H9m1-4h4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        자원의 보고
+                    </h3>
+                    <p class="text-gray-700">
+                        한류와 난류가 교차하는 황금어장이며, 특히 '불타는 얼음'이라 불리는 
+                        가스 하이드레이트가 약 6억 톤 매장되어 있는 것으로 추정되는 막대한 경제적 가치를 지닙니다.
+                    </p>
+                </div>
+                
+                <!-- 카드 3: 역사적 증거 -->
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 border-t-4 border-dokdo-blue">
+                    <h3 class="text-2xl font-bold mb-3 text-dokdo-blue flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        명백한 영유권
+                    </h3>
+                    <p class="text-gray-700">
+                        『세종실록지리지』, 대한제국 「칙령 제41호」 등 한국 기록뿐 아니라, 
+                        일본의 공식 문서인 「태정관 지령」(1877)마저 독도가 일본과 관계없음을 인정했습니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 2: 역사적 영유권 증거 (탭 인터페이스) -->
+        <section class="mb-16">
+            <h2 class="section-title text-3xl md:text-4xl font-extrabold text-center mb-10 text-dokdo-dark">
+                역사적 영유권 증거
+            </h2>
+            
+            <!-- 탭 버튼 컨테이너 -->
+            <div class="flex flex-wrap justify-center items-center space-x-2 md:space-x-4 mb-8">
+                <button onclick="showProof('korea')" id="tab-korea" class="tab-button active px-4 py-2 text-lg font-medium rounded-full border border-dokdo-blue/50 text-dokdo-blue transition duration-200 shadow-md">한국 기록 (명확한 주권)</button>
+                <button onclick="showProof('japan')" id="tab-japan" class="tab-button px-4 py-2 text-lg font-medium rounded-full border border-gray-400 text-gray-700 transition duration-200">일본 기록 (스스로의 인정)</button>
+                
+                <!-- '현대 및 불법 편입' 탭과 '타임라인 보기' 버튼을 하나의 그룹으로 묶음 -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="showProof('modern')" id="tab-modern" class="tab-button px-4 py-2 text-lg font-medium rounded-full border border-gray-400 text-gray-700 transition duration-200">현대 및 불법 편입</button>
+                    <!-- 타임라인 버튼 추가 -->
+                    <a href="timeline.html" class="timeline-button">
+                        <svg class="w-5 h-5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        타임라인 보기
+                    </a>
+                </div>
+            </div>
+
+            <!-- 탭 내용 -->
+            <div id="proof-content" class="proof-card-container">
+                <!-- 콘텐츠는 JS로 로드됨 -->
+            </div>
+        </section>
+
+        <!-- 섹션 3: 독도의 중요 용어 해설 -->
+        <section class="mb-16 text-center">
+            <h2 class="section-title text-3xl md:text-4xl font-extrabold text-center mb-10 text-dokdo-dark">
+                독도 핵심 용어 해설
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                
+                <!-- 용어 카드 1: 실효적 지배 -->
+                <div class="text-left bg-white p-6 rounded-xl shadow-lg border-l-8 border-dokdo-blue">
+                    <h3 class="text-2xl font-bold text-dokdo-blue mb-2">실효적 지배 (Effective Control)</h3>
+                    <p class="text-gray-700">
+                        국가가 해당 영토에 대해 실제로 주인으로서의 권리를 행사하며 관리하고 있다는 것을 의미합니다. 대한민국은 독도경비대 상시 주둔, 주민 거주, 공식 도로명 주소(이사부길, 안용복길) 부여 등의 활동으로 독도를 명백히 실효적으로 지배하고 있습니다.
+                    </p>
+                </div>
+
+                <!-- 용어 카드 2: 배타적 경제수역 (EEZ) -->
+                <div class="text-left bg-white p-6 rounded-xl shadow-lg border-l-8 border-dokdo-blue">
+                    <h3 class="text-2xl font-bold text-dokdo-blue mb-2">배타적 경제수역 (EEZ)</h3>
+                    <p class="text-gray-700">
+                        해안선에서 최대 약 370km(200해리)까지 해당 국가만 경제 활동(어업, 자원 개발 등)을 할 수 있는 해역입니다. 독도가 우리 영토이기에, 독도를 기준으로 넓은 EEZ를 확보할 수 있으며, 이는 막대한 해양 자원 확보의 기준점이 됩니다.
+                    </p>
+                </div>
+
+                <!-- 용어 카드 3: 태정관 지령 -->
+                <div class="text-left bg-white p-6 rounded-xl shadow-lg border-l-8 border-dokdo-blue">
+                    <h3 class="text-2xl font-bold text-dokdo-blue mb-2">태정관 지령 (1877년)</h3>
+                    <p class="text-gray-700">
+                        일본 메이지 정부의 최고 국가기관인 태정관이 "울릉도와 독도는 일본과 관계가 없다"고 공식적으로 결론 내린 문서입니다. 독도가 일본 영토가 아님을 일본 정부 스스로 인정한 결정적인 증거입니다.
+                    </p>
+                </div>
+
+                <!-- 용어 카드 4: 칙령 제41호 -->
+                <div class="text-left bg-white p-6 rounded-xl shadow-lg border-l-8 border-dokdo-blue">
+                    <h3 class="text-2xl font-bold text-dokdo-blue mb-2">대한제국 칙령 제41호 (1900년)</h3>
+                    <p class="text-gray-700">
+                        대한제국 고종이 독도(석도)를 울릉군수의 관할 구역으로 명확히 지정한 근대적 법령입니다. 이는 한국이 독도에 대한 근대적 영유권 의지를 분명히 한 공식 선포입니다.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 독도 용어사전 버튼 -->
+            <a href="dict.html" class="dictionary-button">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.5v11M17 11.5v-1m-10 1v-1m14 1V9M7 15h10M3 15h4M17 15h4M7 9h10M3 9h4M17 9h4M12 3v18"></path></svg>
+                독도 용어사전 바로가기
+            </a>
+            
+        </section>
+        
+        <!-- 섹션 4: 평화적 해결 모색 -->
+        <section class="mb-16">
+            <h2 class="section-title text-3xl md:text-4xl font-extrabold text-center mb-10 text-dokdo-dark">
+                평화적 해결 모색
+            </h2>
+
+            <div class="bg-dokdo-blue/10 p-8 rounded-xl shadow-inner border-l-4 border-dokdo-blue">
+                <p class="text-xl font-semibold mb-4 text-dokdo-dark">
+                    독도 문제는 '실효적 지배 강화'와 '역사적 사실 기반 논리적 접근'이 중요합니다.
+                </p>
+                <ul class="list-disc list-inside space-y-3 text-gray-700 ml-4">
+                    <li><span class="font-bold">국제사법재판소 (ICJ) 제소:</span> 일본은 제소를 주장하나, 독도는 명백한 고유 영토이므로 한국 정부는 재판 대상이 될 수 없다는 입장을 고수하고 있습니다.</li>
+                    <li><span class="font-bold">미래 세대 교류:</span> 감정적 대응을 넘어, 한일 청소년 간의 역사 대화와 상호 이해 증진을 통해 동아시아 평화라는 더 큰 틀에서 문제 해결의 실마리를 찾아야 합니다.</li>
+                    <li><span class="font-bold">학술 공동 연구:</span> 양국 학자들이 함께 역사를 논의하고 공통의 이해를 모색하는 학술적 접근을 지속해야 합니다.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="text-center p-8 mt-12 bg-dokdo-dark text-gray-400 text-sm shadow-inner">
+        <p class="text-lg font-bold text-dokdo-light mb-1">독도는 대한민국 고유의 영토입니다.</p>
+        <p>&copy; 2025 독도 종합 보고서. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // JS를 이용해 동적으로 탭 콘텐츠 로드 및 표시
+        const proofData = {
+            korea: [
+                { year: "1454년", title: "세종실록지리지", content: "울릉도(무릉)에서 독도(우산)가 눈으로 보인다는 사실을 기록한 가장 오래된 공식 문서로, 두 섬을 하나의 생활권으로 인식했음을 증명합니다." },
+                { year: "1900년", title: "대한제국 칙령 제41호", content: "독도(석도)를 울릉군의 관할 구역으로 명확히 지정하여, 근대적 법령으로 독도 영유권을 공식 선포했습니다." },
+                { year: "1808년", title: "만기요람", content: "“울릉과 우산은 모두 우산국의 땅인데, 우산은 왜인들이 말하는 송도다”라고 기록하여 독도(우산)가 한국 땅이며 일본이 부르던 이름(송도)과 동일함을 밝혔습니다." },
+            ],
+            japan: [
+                { year: "1667년", title: "은주시청합기", content: "일본 관리가 작성한 보고서로, 울릉도와 독도를 조선의 땅으로 인식하고 자국의 서쪽 경계는 오키섬까지라고 명확히 선을 그었습니다." },
+                { year: "1877년", title: "태정관 지령", content: "일본 최고 국가기관인 태정관이 \"울릉도 외 1도(독도)는 일본과 관계없다\"고 공식적으로 결론 내린 결정적 증거입니다." },
+                { year: "1785년", title: "삼국접양지도", content: "일본 실학자 하야시 시헤이가 그린 지도로, 울릉도와 독도를 조선과 동일한 황색으로 표시하여 조선 영토임을 인정했습니다." },
+            ],
+            modern: [
+                { year: "1905년", title: "시마네현 고시 제40호 (불법)", content: "러일전쟁 중 일본이 '주인 없는 땅'이라는 명분으로 독도를 '다케시마'로 개칭하고 시마네현에 불법적으로 편입시킨 행정 조치입니다." },
+                { year: "1946년", title: "SCAPIN 제677호", content: "연합군최고사령관 지령으로, 독도를 일본의 통치·행정 범위에서 제외하고 한국 영토로 표시했습니다." },
+                { year: "1951년", title: "샌프란시스코 강화조약", content: "최종 조약문에서 일본의 로비로 독도 귀속이 명시되지 않아 일본 억지 주장의 빌미가 되었지만, 초기 초안에는 한국 반환 영토로 포함되어 있었습니다." },
+            ]
+        };
+
+        const contentDiv = document.getElementById('proof-content');
+        const tabButtons = document.querySelectorAll('.tab-button');
+
+        function showProof(key) {
+            // 탭 버튼 활성화 상태 업데이트
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active', 'bg-dokdo-blue', 'text-white', 'border-dokdo-blue', 'shadow-md');
+                btn.classList.add('text-gray-700', 'border-gray-400');
+            });
+            const activeTab = document.getElementById(`tab-${key}`);
+            activeTab.classList.add('active', 'bg-dokdo-blue', 'text-white', 'border-dokdo-blue', 'shadow-md');
+            activeTab.classList.remove('text-gray-700', 'border-gray-400');
+
+
+            // 콘텐츠 생성
+            let htmlContent = '';
+            const isJapan = key === 'japan';
+            const isIllegal = key === 'modern';
+            
+            proofData[key].forEach(item => {
+                const colorClass = isIllegal ? 'border-red-600' : (isJapan ? 'border-gray-500' : 'border-dokdo-blue');
+                const titleColorClass = isIllegal ? 'text-red-600' : 'text-dokdo-blue';
+                
+                htmlContent += `
+                    <div class="bg-white p-6 rounded-xl shadow-lg transition duration-300 hover:shadow-2xl border-l-8 ${colorClass}">
+                        <div class="flex items-start mb-3">
+                            <span class="text-xl font-extrabold px-3 py-1 mr-4 rounded-lg bg-dokdo-light ${titleColorClass}">${item.year}</span>
+                            <h3 class="text-2xl font-bold ${titleColorClass}">${item.title}</h3>
+                        </div>
+                        <p class="text-gray-700 ml-4">${item.content}</p>
+                    </div>
+                `;
+            });
+            contentDiv.innerHTML = htmlContent;
+        }
+
+        // 페이지 로드 시 한국 기록 탭을 기본으로 표시
+        showProof('korea');
+    </script>
+</body>
+</html>
