@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지구를 식혀라! 탄소중립 히어로</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f0f9ff; /* sky-50 */
+        }
+
+        .animate-fade-in { animation: fadeIn 0.5s ease-in; }
+        .animate-slide-up { animation: slideUp 0.5s ease-out; }
+        .animate-bounce-slow { animation: bounce 2s infinite; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* 인쇄 설정 */
+        @media print {
+            body * { visibility: hidden; }
+            #certificate-container, #certificate-container * { visibility: visible; }
+            #certificate-container {
+                position: absolute;
+                left: 0; top: 0;
+                width: 100%; height: 100%;
+                display: flex; justify-content: center; align-items: center;
+                background: white;
+                margin: 0; padding: 0;
+                border: none;
+            }
+            #certificate-card {
+                border: 5px solid #fcd34d; /* yellow-300 */
+                width: 100%;
+                height: 90%;
+                display: flex; flex-direction: column; justify-content: center; align-items: center;
+            }
+            .no-print { display: none !important; }
+        }
+
+        /* 카드 공통 스타일 */
+        .card {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .card-header {
+            background-color: #22c55e; /* green-500 */
+            padding: 1rem 1.5rem;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex; align-items: center;
+        }
+        .card-body { padding: 1.5rem; }
+
+        /* 진행바 */
+        .progress-track {
+            width: 100%; background-color: #e5e7eb; border-radius: 9999px; height: 0.625rem; margin-bottom: 2rem;
+        }
+        .progress-bar {
+            height: 0.625rem; border-radius: 9999px; transition: width 0.5s;
+        }
+    </style>
+</head>
+<body class="selection:bg-green-200">
+
+    <!-- 네비게이션 바 -->
+    <nav class="bg-white shadow-md sticky top-0 z-50 no-print">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="switchTab('home')">
+                <i data-lucide="tree-pine" class="text-green-600 w-8 h-8"></i>
+                <span class="text-xl font-bold text-green-800">지구를 식혀라!</span>
+            </div>
+            <div class="flex space-x-2">
+                <button onclick="switchTab('lesson1')" id="nav-l1" class="flex items-center space-x-1 px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all">
+                    <i data-lucide="book-open" size="18"></i> <span class="text-sm md:text-base font-medium">1교시</span>
+                </button>
+                <button onclick="switchTab('lesson2')" id="nav-l2" class="flex items-center space-x-1 px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all">
+                    <i data-lucide="school" size="18"></i> <span class="text-sm md:text-base font-medium">2교시</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto p-4 pb-20">
+        
+        <!-- 홈 화면 -->
+        <section id="home-section" class="flex flex-col items-center justify-center text-center mt-10 space-y-8 animate-fade-in">
+            <div class="relative">
+                <div class="absolute -top-10 -right-10 animate-bounce">
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Sun.png" alt="Sun" width="80" />
+                </div>
+                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Globe%20Showing%20Asia-Australia.png" alt="Earth" width="200" class="animate-pulse drop-shadow-2xl" />
+            </div>
+            <div>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-green-800 mb-4">탄소중립,<br class="md:hidden" /> 우리 학교에서 실천해요!</h1>
+                <p class="text-lg text-gray-600 mb-8 bg-white p-4 rounded-xl shadow-sm inline-block">
+                    초등학교 3학년 친구들! <br/>
+                    열이 나는 지구를 구하기 위한 <span class="text-green-600 font-bold">탄소중립 히어로</span>가 되어볼까요?
+                </p>
+            </div>
+            <button onclick="switchTab('lesson1')" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-2xl font-bold px-10 py-4 rounded-3xl shadow-xl hover:scale-105 transition-transform flex items-center space-x-3">
+                <span>수업 시작하기</span>
+                <i data-lucide="zap" class="fill-yellow-300 text-yellow-300"></i>
+            </button>
+        </section>
+
+        <!-- 1교시 컨테이너 -->
+        <section id="lesson1-section" class="hidden space-y-8">
+            <!-- 진행바 -->
+            <div class="progress-track no-print"><div id="l1-progress" class="progress-bar bg-green-600" style="width: 25%"></div></div>
+
+            <!-- L1-0: 도입 -->
+            <div id="l1-step-0" class="card animate-slide-up">
+                <div class="card-header">1교시: 지구가 열이 나요!</div>
+                <div class="card-body text-center space-y-6">
+                    <p class="text-xl font-medium">오늘 배울 내용은?</p>
+                    <ul class="text-left bg-green-50 p-6 rounded-xl space-y-3 text-lg">
+                        <li class="flex items-center"><i data-lucide="alert-circle" class="text-red-500 mr-2"></i> 지구가 왜 뜨거워지는지 알아봐요.</li>
+                        <li class="flex items-center"><i data-lucide="check-circle-2" class="text-blue-500 mr-2"></i> '탄소중립 0(Zero)'가 무엇인지 배워요.</li>
+                    </ul>
+                    <button onclick="setL1Step(1)" class="bg-green-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-green-600 transition-colors">출발!</button>
+                </div>
+            </div>
+
+            <!-- L1-1: 아픈 지구 -->
+            <div id="l1-step-1" class="card animate-slide-up hidden">
+                <div class="card-header">활동 1: 탄소 이불을 덮은 지구</div>
+                <div class="card-body flex flex-col items-center space-y-6">
+                    <div id="earth-visual" class="relative w-64 h-64 flex items-center justify-center bg-blue-100 rounded-full transition-all duration-500" style="filter: hue-rotate(0deg) saturate(100%)">
+                        <span class="text-9xl select-none relative z-10">🌍</span>
+                        <div id="tree-layer" class="absolute inset-0 w-full h-full z-20 pointer-events-none overflow-hidden rounded-full"></div>
+                        <div id="earth-sweat" class="absolute top-10 right-10 text-4xl animate-bounce hidden z-30">💦</div>
+                        <div id="earth-sweat-2" class="absolute top-20 left-5 text-3xl animate-pulse hidden z-30">😓</div>
+                    </div>
+                    
+                    <div class="bg-orange-100 p-4 rounded-lg w-full text-center">
+                        <p class="font-bold text-lg mb-2">현재 탄소 이불 개수: <span id="temp-count">0</span>장</p>
+                        <div class="flex justify-center gap-4">
+                            <button onclick="changeTemp(1)" class="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800">탄소 이불 덮기 🌫️</button>
+                            <button onclick="changeTemp(-1)" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">나무 심기 🌳</button>
+                        </div>
+                    </div>
+                    <div class="text-left bg-gray-50 p-4 rounded-lg border border-gray-200 w-full">
+                        <p class="mb-2"><strong>선생님 말씀:</strong></p>
+                        <p>우리가 자동차를 타고 전기를 낭비할 때마다 지구는 <strong>'탄소'</strong>라는 두꺼운 이불을 덮게 돼요. 이불을 너무 많이 덮으면 지구가 열이 난답니다.</p>
+                        <a href="https://gemini.google.com/share/d7c4855c1c28" target="_blank" class="mt-3 inline-flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm font-bold">
+                            <i data-lucide="book-open" class="w-4 h-4 mr-2"></i> 동화보기
+                        </a>
+                    </div>
+                    <button onclick="setL1Step(2)" class="bg-green-500 text-white w-full py-3 rounded-xl font-bold">다음 활동: 탄소중립 0 만들기</button>
+                </div>
+            </div>
+
+            <!-- L1-2: 저울 게임 -->
+            <div id="l1-step-2" class="card animate-slide-up hidden">
+                <div class="card-header">활동 2: 탄소중립 저울 놀이</div>
+                <div class="card-body flex flex-col items-center space-y-6">
+                    <div class="text-center mb-4">
+                        <p class="text-lg text-gray-700">배출하는 탄소(+)와 없애는 탄소(-)를 같게 만들어서</p>
+                        <p class="text-2xl font-bold text-green-600">'0 (Zero)'을 만들어주세요!</p>
+                    </div>
+
+                    <!-- 저울 시각화 -->
+                    <div class="relative w-full h-32 flex items-end justify-center mb-8">
+                        <div id="scale-bar" class="w-64 h-2 bg-gray-800 transition-transform duration-500 origin-center rounded-full rotate-12"></div>
+                        <div class="absolute bottom-0 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[40px] border-b-gray-400"></div>
+                        
+                        <!-- 왼쪽 (배출) -->
+                        <div id="scale-left" class="absolute left-10 bottom-10 transition-all duration-500 mb-8">
+                            <div class="flex flex-col items-center"><div class="text-4xl">🏭</div><span class="font-bold text-red-500">배출 (+)</span></div>
+                        </div>
+                        <!-- 오른쪽 (흡수) -->
+                        <div id="scale-right" class="absolute right-10 bottom-10 transition-all duration-500 -mb-4">
+                            <div class="flex flex-col items-center"><div class="text-4xl">🌳</div><span class="font-bold text-blue-500">흡수 (-)</span></div>
+                        </div>
+                        <!-- 결과 값 -->
+                        <div id="balance-val" class="absolute -top-10 font-mono text-3xl font-bold bg-white px-4 py-1 rounded shadow border">+3</div>
+                    </div>
+
+                    <div id="balance-msg" class="p-3 rounded-lg font-bold text-center w-full bg-gray-100">탄소가 너무 많아요! 줄여주세요!</div>
+
+                    <div class="grid grid-cols-2 gap-4 w-full">
+                        <div class="space-y-2">
+                            <p class="text-center text-sm font-bold text-red-500">탄소 발생 (나쁜 습관)</p>
+                            <button onclick="updateBalance(1)" class="w-full bg-red-100 hover:bg-red-200 p-3 rounded text-left flex items-center"><i data-lucide="trash-2" class="w-4 h-4 mr-2"></i> 쓰레기 버리기 (+1)</button>
+                            <button onclick="updateBalance(2)" class="w-full bg-red-100 hover:bg-red-200 p-3 rounded text-left flex items-center"><i data-lucide="wind" class="w-4 h-4 mr-2"></i> 자동차 타기 (+2)</button>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-center text-sm font-bold text-blue-500">탄소 흡수/절약 (착한 행동)</p>
+                            <button onclick="updateBalance(-1)" class="w-full bg-blue-100 hover:bg-blue-200 p-3 rounded text-left flex items-center"><i data-lucide="lightbulb" class="w-4 h-4 mr-2"></i> 빈 방 불 끄기 (-1)</button>
+                            <button onclick="updateBalance(-2)" class="w-full bg-blue-100 hover:bg-blue-200 p-3 rounded text-left flex items-center"><i data-lucide="tree-pine" class="w-4 h-4 mr-2"></i> 나무 심기 (-2)</button>
+                        </div>
+                    </div>
+                    <button id="btn-l1-finish" class="hidden bg-green-500 text-white w-full py-3 rounded-xl font-bold animate-bounce" onclick="setL1Step(3)">성공! 퀴즈 풀러 가기</button>
+                </div>
+            </div>
+
+            <!-- L1-3: 퀴즈 -->
+            <div id="l1-step-3" class="card animate-slide-up hidden">
+                <div class="card-header">정리 퀴즈</div>
+                <div class="card-body text-center space-y-8">
+                    <div class="min-h-[80px] flex items-center justify-center">
+                        <h3 id="quiz-q" class="text-xl md:text-2xl font-bold break-keep">지구가 뜨거워지는 이유는 우리가 '탄소 이불'을 너무 많이 덮어서이다.</h3>
+                    </div>
+                    <div id="quiz-options" class="flex gap-4 justify-center">
+                        <button onclick="checkQuiz(true)" class="w-32 h-32 bg-blue-100 rounded-2xl border-4 border-blue-300 text-6xl text-blue-600 hover:bg-blue-200 flex items-center justify-center">O</button>
+                        <button onclick="checkQuiz(false)" class="w-32 h-32 bg-red-100 rounded-2xl border-4 border-red-300 text-6xl text-red-600 hover:bg-red-200 flex items-center justify-center">X</button>
+                    </div>
+                    <div id="quiz-result" class="hidden p-4 rounded-xl"></div>
+                </div>
+            </div>
+
+            <!-- L1-Finish -->
+            <div id="l1-finish" class="card animate-slide-up hidden">
+                <div class="card-header">1교시 완료!</div>
+                <div class="card-body text-center space-y-6 py-10">
+                    <div class="text-6xl">🎉</div>
+                    <h2 class="text-2xl font-bold text-green-800">축하합니다!</h2>
+                    <p class="text-lg">탄소중립 개념 박사가 되셨군요!</p>
+                    <button onclick="switchTab('lesson2')" class="bg-green-500 text-white px-8 py-3 rounded-xl font-bold">2교시: 실천하러 가기 👉</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2교시 컨테이너 -->
+        <section id="lesson2-section" class="hidden space-y-8">
+            <div class="progress-track no-print"><div id="l2-progress" class="progress-bar bg-blue-600" style="width: 33%"></div></div>
+
+            <!-- L2-1: 보물찾기 -->
+            <div id="l2-step-0" class="card animate-slide-up">
+                <div class="card-header">활동 1: 학교 속 탄소 줄이기 작전</div>
+                <div class="card-body">
+                    <p class="text-center mb-4 text-gray-600">학교의 장소들을 클릭해서 숨어있는 실천 방법을 모두 찾아보세요! (<span id="hunt-count">0</span>/4)</p>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <button id="hunt-btn-1" onclick="foundItem(1)" class="p-4 rounded-xl border-2 bg-white border-gray-200 hover:bg-gray-50 hover:shadow-md transition-all flex flex-col items-center h-32 justify-center">
+                            <div class="text-3xl mb-2">❓</div><div class="font-bold text-gray-700">교실</div>
+                        </button>
+                        <button id="hunt-btn-2" onclick="foundItem(2)" class="p-4 rounded-xl border-2 bg-white border-gray-200 hover:bg-gray-50 hover:shadow-md transition-all flex flex-col items-center h-32 justify-center">
+                            <div class="text-3xl mb-2">❓</div><div class="font-bold text-gray-700">급식실</div>
+                        </button>
+                        <button id="hunt-btn-3" onclick="foundItem(3)" class="p-4 rounded-xl border-2 bg-white border-gray-200 hover:bg-gray-50 hover:shadow-md transition-all flex flex-col items-center h-32 justify-center">
+                            <div class="text-3xl mb-2">❓</div><div class="font-bold text-gray-700">복도</div>
+                        </button>
+                        <button id="hunt-btn-4" onclick="foundItem(4)" class="p-4 rounded-xl border-2 bg-white border-gray-200 hover:bg-gray-50 hover:shadow-md transition-all flex flex-col items-center h-32 justify-center">
+                            <div class="text-3xl mb-2">❓</div><div class="font-bold text-gray-700">화장실</div>
+                        </button>
+                    </div>
+                    <div id="hunt-msg" class="bg-yellow-50 p-4 rounded-lg mb-4 hidden">
+                        <h4 class="font-bold mb-2 text-yellow-800">발견한 팁:</h4>
+                        <p id="hunt-text" class="text-gray-700"></p>
+                    </div>
+                    <button id="btn-l2-next1" onclick="setL2Step(1)" class="hidden bg-green-500 text-white w-full py-3 rounded-xl font-bold animate-pulse">모두 찾았다! 빙고하러 가기</button>
+                </div>
+            </div>
+
+            <!-- L2-2: 빙고 -->
+            <div id="l2-step-1" class="card animate-slide-up hidden">
+                <div class="card-header">활동 2: 탄소중립 실천 빙고</div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <p>내가 학교에서 지킬 수 있는 약속을 클릭하세요!</p>
+                        <p class="text-sm text-gray-500">3개 이상 선택하면 히어로가 될 준비 완료!</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 md:gap-4 mb-6 max-w-sm mx-auto" id="bingo-grid">
+                        <!-- JS generated -->
+                    </div>
+                    <div class="text-center mb-4 font-bold text-green-700">현재 <span id="bingo-count">0</span>개의 약속을 선택했어요!</div>
+                    <button id="btn-bingo-next" disabled class="w-full bg-gray-300 text-gray-500 py-3 rounded-xl cursor-not-allowed" onclick="setL2Step(2)">3개 이상 선택해주세요</button>
+                </div>
+            </div>
+
+            <!-- L2-3: 선서식 (입력) -->
+            <div id="l2-step-2" class="card animate-slide-up hidden">
+                <div class="card-header">정리: 히어로 선서식</div>
+                <div class="card-body text-center space-y-6">
+                    <h3 class="text-xl font-bold text-gray-800">마지막 관문입니다!</h3>
+                    <div class="bg-white p-6 rounded-xl border-2 border-green-100 shadow-inner">
+                        <p class="text-2xl font-black text-green-600 mb-4">"나는 지구를 지키는<br/>탄소중립 히어로입니다!"</p>
+                        <p class="text-gray-500 mb-4">이름을 입력하고 선서 버튼을 눌러주세요.</p>
+                        <input type="text" id="hero-name-input" placeholder="이름을 입력하세요" class="w-full p-3 border-2 border-gray-300 rounded-lg text-center text-lg focus:border-green-500 outline-none" oninput="checkNameInput()">
+                    </div>
+                    <button id="btn-generate-cert" disabled onclick="showCertificate()" class="bg-gray-300 text-gray-500 w-full py-3 rounded-xl font-bold cursor-not-allowed transition-colors">히어로 임명장 받기</button>
+                </div>
+            </div>
+
+            <!-- L2-4: 인증서 (결과) -->
+            <div id="l2-step-3" class="card animate-slide-up hidden">
+                <div class="card-header no-print">인증서 발급 완료</div>
+                <div class="card-body">
+                    <div id="certificate-container" class="relative">
+                        <div id="certificate-card" class="bg-gradient-to-br from-yellow-100 to-amber-100 p-8 rounded-xl border-4 border-yellow-300 text-center relative shadow-lg min-h-[400px] flex flex-col justify-center items-center">
+                            <div class="absolute top-8 left-1/2 -translate-x-1/2 bg-yellow-400 text-white p-3 rounded-full shadow-lg">
+                                <i data-lucide="medal" size="40"></i>
+                            </div>
+                            <h2 class="text-3xl font-black text-yellow-800 mt-10 mb-6">탄소중립 히어로 인증서</h2>
+                            <p class="text-xl text-gray-700 mb-6">이름: <span id="cert-name" class="font-bold text-2xl underline decoration-wavy decoration-green-500"></span></p>
+                            <p class="text-lg text-gray-600 leading-relaxed mb-8 font-medium">
+                                위 학생은 지구를 사랑하는 마음으로<br/>
+                                학교에서 탄소중립 실천을 약속하였기에<br/>
+                                이 인증서를 드립니다.
+                            </p>
+                            <div class="text-base text-gray-500 font-bold">부산대학교 환경교육센터</div>
+                            <div class="absolute bottom-6 right-6 opacity-60 rotate-[-15deg] border-4 border-red-500 text-red-500 rounded-full w-24 h-24 flex items-center justify-center font-black text-lg">참잘했어요</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex justify-center space-x-4 no-print">
+                        <button onclick="switchTab('home')" class="bg-gray-100 text-gray-600 px-6 py-3 rounded-xl font-medium hover:bg-gray-200">처음으로</button>
+                        <button onclick="downloadPDF()" id="btn-pdf" class="bg-green-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-green-600 flex items-center">
+                            <i data-lucide="download" class="mr-2"></i> PDF로 저장하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- 전역 상태 및 데이터 ---
+        let temp = 0;
+        let balance = 3;
+        let foundItems = [];
+        let bingoChecked = Array(9).fill(false);
+        
+        const huntData = {
+            1: { place: "교실", icon: "💡", action: "빈 교실 불 끄기", text: "교실이 비어있을 땐 스위치를 내려요!" },
+            2: { place: "급식실", icon: "🍱", action: "급식 남기지 않기", text: "음식물 쓰레기도 탄소를 만들어요!" },
+            3: { place: "복도", icon: "🗑️", action: "분리배출 하기", text: "캔, 플라스틱, 종이를 끼리끼리 모아요." },
+            4: { place: "화장실", icon: "💧", action: "물 아껴 쓰기", text: "손 씻을 때 물을 틀어놓지 않아요." }
+        };
+
+        const bingoTexts = [
+            "빈 교실 불 끄기", "급식 다 먹기", "이면지 사용하기",
+            "물 아껴 쓰기", "가까운 거리 걷기", "분리배출 잘하기",
+            "장바구니 쓰기", "나무 사랑하기", "계단 이용하기"
+        ];
+
+        const quizData = [
+            { q: "지구가 뜨거워지는 이유는 우리가 '탄소 이불'을 너무 많이 덮어서이다.", a: true },
+            { q: "탄소중립은 탄소를 아예 없애버리는 것이다.", a: false, exp: "아니에요! 배출량과 흡수량을 같게 만들어 '0'으로 만드는 것이에요." },
+            { q: "전기를 아껴 쓰는 것은 탄소를 줄이는 일이다.", a: true }
+        ];
+        let currentQuizIdx = 0;
+
+        // --- 초기화 ---
+        window.onload = function() {
+            lucide.createIcons();
+            initBingo();
+        };
+
+        // --- 네비게이션 로직 ---
+        function switchTab(tab) {
+            document.getElementById('home-section').classList.add('hidden');
+            document.getElementById('lesson1-section').classList.add('hidden');
+            document.getElementById('lesson2-section').classList.add('hidden');
+            
+            // Nav active states
+            const nav1 = document.getElementById('nav-l1');
+            const nav2 = document.getElementById('nav-l2');
+            nav1.className = nav1.className.replace('bg-green-500 text-white shadow-md', 'bg-gray-100 text-gray-600');
+            nav2.className = nav2.className.replace('bg-green-500 text-white shadow-md', 'bg-gray-100 text-gray-600');
+
+            if(tab === 'home') {
+                document.getElementById('home-section').classList.remove('hidden');
+            } else if (tab === 'lesson1') {
+                document.getElementById('lesson1-section').classList.remove('hidden');
+                nav1.className = "flex items-center space-x-1 px-4 py-2 rounded-full bg-green-500 text-white shadow-md scale-105 transition-all";
+            } else if (tab === 'lesson2') {
+                document.getElementById('lesson2-section').classList.remove('hidden');
+                nav2.className = "flex items-center space-x-1 px-4 py-2 rounded-full bg-green-500 text-white shadow-md scale-105 transition-all";
+            }
+        }
+
+        // --- 1교시 로직 ---
+        function setL1Step(step) {
+            for(let i=0; i<=3; i++) {
+                const el = document.getElementById(`l1-step-${i}`);
+                if(el) el.classList.add('hidden');
+            }
+            document.getElementById('l1-finish').classList.add('hidden');
+
+            if(step <= 3) {
+                document.getElementById(`l1-step-${step}`).classList.remove('hidden');
+            } else {
+                document.getElementById('l1-finish').classList.remove('hidden');
+            }
+            document.getElementById('l1-progress').style.width = `${((step + 1) / 4) * 100}%`;
+        }
+
+        // 활동 1: 아픈 지구
+        function changeTemp(delta) {
+            temp = Math.max(0, Math.min(5, temp + delta));
+            document.getElementById('temp-count').innerText = temp;
+            
+            const visual = document.getElementById('earth-visual');
+            visual.style.filter = `hue-rotate(-${temp * 30}deg) saturate(${100 + temp * 20}%)`;
+            
+            const s1 = document.getElementById('earth-sweat');
+            const s2 = document.getElementById('earth-sweat-2');
+            if(temp > 2) {
+                s1.classList.remove('hidden'); s2.classList.remove('hidden');
+            } else {
+                s1.classList.add('hidden'); s2.classList.add('hidden');
+            }
+
+            // 나무 업데이트 (트리 효과)
+            updateTrees(delta);
+        }
+
+        function updateTrees(delta) {
+            const container = document.getElementById('tree-layer');
+            
+            if (delta < 0) { // 나무 심기
+                const tree = document.createElement('div');
+                tree.className = 'absolute text-3xl animate-bounce-slow select-none tree-item';
+                tree.innerText = '🌳';
+                
+                // 랜덤 위치 (중심에서 일정 거리 이내)
+                const angle = Math.random() * 2 * Math.PI;
+                const radius = Math.random() * 40; // 0 ~ 40%
+                const x = 50 + radius * Math.cos(angle);
+                const y = 50 + radius * Math.sin(angle);
+                
+                tree.style.left = `${x}%`;
+                tree.style.top = `${y}%`;
+                tree.style.transform = 'translate(-50%, -50%)';
+                
+                container.appendChild(tree);
+            } else if (delta > 0) { // 탄소 이불 (나무 제거)
+                const trees = container.getElementsByClassName('tree-item');
+                if(trees.length > 0) {
+                    // 마지막에 추가된 나무 제거
+                    container.removeChild(trees[trees.length - 1]);
+                }
+            }
+        }
+
+        // 활동 2: 저울 게임
+        function updateBalance(val) {
+            balance += val;
+            document.getElementById('balance-val').innerText = (balance > 0 ? "+" : "") + balance;
+            
+            const bar = document.getElementById('scale-bar');
+            const left = document.getElementById('scale-left');
+            const right = document.getElementById('scale-right');
+            const msg = document.getElementById('balance-msg');
+            const finishBtn = document.getElementById('btn-l1-finish');
+
+            if (balance > 0) {
+                bar.className = "w-64 h-2 bg-gray-800 transition-transform duration-500 origin-center rounded-full rotate-12";
+                left.classList.replace('-mb-4', 'mb-8'); left.classList.replace('mb-0', 'mb-8');
+                right.classList.replace('mb-8', '-mb-4'); right.classList.replace('mb-0', '-mb-4');
+                msg.innerText = "탄소가 너무 많아요! 줄여주세요!";
+                msg.className = "p-3 rounded-lg font-bold text-center w-full bg-gray-100";
+                finishBtn.classList.add('hidden');
+            } else if (balance < 0) {
+                bar.className = "w-64 h-2 bg-gray-800 transition-transform duration-500 origin-center rounded-full -rotate-12";
+                left.classList.replace('mb-8', '-mb-4'); left.classList.replace('mb-0', '-mb-4');
+                right.classList.replace('-mb-4', 'mb-8'); right.classList.replace('mb-0', 'mb-8');
+                msg.innerText = "너무 많이 줄였나? 균형을 맞춰주세요!";
+                msg.className = "p-3 rounded-lg font-bold text-center w-full bg-gray-100";
+                finishBtn.classList.add('hidden');
+            } else {
+                bar.className = "w-64 h-2 bg-gray-800 transition-transform duration-500 origin-center rounded-full rotate-0";
+                left.classList.replace('mb-8', 'mb-0'); left.classList.replace('-mb-4', 'mb-0');
+                right.classList.replace('mb-8', 'mb-0'); right.classList.replace('-mb-4', 'mb-0');
+                msg.innerText = "와! 탄소중립(0) 성공! 지구가 시원해졌어요!";
+                msg.className = "p-3 rounded-lg font-bold text-center w-full bg-green-100 text-green-800 animate-pulse";
+                finishBtn.classList.remove('hidden');
+            }
+        }
+
+        // 활동 3: 퀴즈
+        function checkQuiz(answer) {
+            const q = quizData[currentQuizIdx];
+            const isCorrect = (answer === q.a);
+            const resultDiv = document.getElementById('quiz-result');
+            
+            resultDiv.classList.remove('hidden', 'bg-green-100', 'bg-orange-100');
+            resultDiv.classList.add(isCorrect ? 'bg-green-100' : 'bg-orange-100');
+            
+            let html = `<p class="text-2xl font-bold mb-2">${isCorrect ? "정답입니다! ⭕" : "틀렸어요 ❌"}</p>`;
+            if(!isCorrect && q.exp) html += `<p class="text-gray-700">${q.exp}</p>`;
+            resultDiv.innerHTML = html;
+
+            if(isCorrect) {
+                setTimeout(() => {
+                    currentQuizIdx++;
+                    if(currentQuizIdx < quizData.length) {
+                        document.getElementById('quiz-q').innerText = quizData[currentQuizIdx].q;
+                        resultDiv.classList.add('hidden');
+                    } else {
+                        setL1Step(4); // Finish
+                    }
+                }, 2000);
+            }
+        }
+
+        // --- 2교시 로직 ---
+        function setL2Step(step) {
+            for(let i=0; i<=3; i++) {
+                document.getElementById(`l2-step-${i}`).classList.add('hidden');
+            }
+            document.getElementById(`l2-step-${step}`).classList.remove('hidden');
+            document.getElementById('l2-progress').style.width = `${((step + 1) / 4) * 100}%`;
+        }
+
+        // 활동 1: 보물찾기
+        function foundItem(id) {
+            if(!foundItems.includes(id)) {
+                foundItems.push(id);
+                const btn = document.getElementById(`hunt-btn-${id}`);
+                btn.className = "p-4 rounded-xl border-2 bg-green-100 border-green-400 scale-95 transition-all flex flex-col items-center h-32 justify-center";
+                btn.innerHTML = `<div class="text-3xl mb-2">${huntData[id].icon}</div><div class="font-bold text-gray-700">${huntData[id].place}</div><div class="text-xs text-green-700 mt-1 font-medium">${huntData[id].action}</div>`;
+                
+                document.getElementById('hunt-count').innerText = foundItems.length;
+                
+                const msgBox = document.getElementById('hunt-msg');
+                msgBox.classList.remove('hidden');
+                document.getElementById('hunt-text').innerText = huntData[id].text;
+
+                if(foundItems.length === 4) {
+                    document.getElementById('btn-l2-next1').classList.remove('hidden');
+                }
+            }
+        }
+
+        // 활동 2: 빙고
+        function initBingo() {
+            const grid = document.getElementById('bingo-grid');
+            bingoTexts.forEach((text, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "aspect-square rounded-lg p-2 flex items-center justify-center text-sm md:text-base font-bold transition-all shadow-sm bg-white border-2 border-green-100 hover:bg-green-50 text-gray-700";
+                btn.innerText = text;
+                btn.onclick = () => toggleBingo(idx, btn, text);
+                grid.appendChild(btn);
+            });
+        }
+
+        function toggleBingo(idx, btn, text) {
+            bingoChecked[idx] = !bingoChecked[idx];
+            if(bingoChecked[idx]) {
+                btn.className = "aspect-square rounded-lg p-2 flex flex-col items-center justify-center text-sm md:text-base font-bold transition-all shadow-inner bg-green-500 text-white";
+                btn.innerHTML = `<i data-lucide="check-circle-2" class="mb-1"></i><span class="text-xs">약속!</span>`;
+                lucide.createIcons();
+            } else {
+                btn.className = "aspect-square rounded-lg p-2 flex items-center justify-center text-sm md:text-base font-bold transition-all shadow-sm bg-white border-2 border-green-100 hover:bg-green-50 text-gray-700";
+                btn.innerText = text;
+            }
+            
+            const count = bingoChecked.filter(Boolean).length;
+            document.getElementById('bingo-count').innerText = count;
+            
+            const nextBtn = document.getElementById('btn-bingo-next');
+            if(count >= 3) {
+                nextBtn.disabled = false;
+                nextBtn.innerText = "히어로 선서하러 가기";
+                nextBtn.className = "btn-primary w-full bg-green-500 text-white py-3 rounded-xl font-bold hover:bg-green-600 transition-colors";
+            } else {
+                nextBtn.disabled = true;
+                nextBtn.innerText = "3개 이상 선택해주세요";
+                nextBtn.className = "w-full bg-gray-300 text-gray-500 py-3 rounded-xl cursor-not-allowed";
+            }
+        }
+
+        // 활동 3: 선서 및 인증서
+        function checkNameInput() {
+            const val = document.getElementById('hero-name-input').value.trim();
+            const btn = document.getElementById('btn-generate-cert');
+            if(val) {
+                btn.disabled = false;
+                btn.className = "bg-green-500 text-white w-full py-3 rounded-xl font-bold hover:bg-green-600 transition-colors";
+            } else {
+                btn.disabled = true;
+                btn.className = "bg-gray-300 text-gray-500 w-full py-3 rounded-xl font-bold cursor-not-allowed transition-colors";
+            }
+        }
+
+        function showCertificate() {
+            const name = document.getElementById('hero-name-input').value;
+            document.getElementById('cert-name').innerText = name;
+            setL2Step(3);
+        }
+
+        // PDF 다운로드 로직
+        async function downloadPDF() {
+            const element = document.getElementById('certificate-card');
+            const btn = document.getElementById('btn-pdf');
+            const name = document.getElementById('hero-name-input').value;
+            
+            btn.innerHTML = "생성 중...";
+            btn.disabled = true;
+
+            try {
+                const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+                const imgData = canvas.toDataURL('image/png');
+                
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('landscape', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save(`${name}_탄소중립히어로_인증서.pdf`);
+            } catch (err) {
+                console.error(err);
+                alert('PDF 생성 중 오류가 발생했습니다.');
+            } finally {
+                btn.innerHTML = '<i data-lucide="download" class="mr-2"></i> PDF로 저장하기';
+                btn.disabled = false;
+                lucide.createIcons(); // Re-render icon
+            }
+        }
+    </script>
+</body>
+</html>
